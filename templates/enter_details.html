@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body {
+            background-image: url({{url_for('static', filename='richmond_bridge.jpg') }});
+            background-size: cover;
+        }
+        .outer {
+            height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fieldStyle {
+        }
+
+        .minimal {
+            background-color: white;
+            font-family: "verdana";
+            border-radius: 10px;
+            border-style: solid;
+            border-color: white;
+            box-shadow: 5px 10px 18px #888888;
+            opacity: 0.9;
+            width: 35%;
+            padding: 10px;
+        }
+    </style>
+    <script>
+        function validate_form() {
+            budget_min = document.forms["preferences"]["budget_min"].value;
+            budget_max = document.forms["preferences"]["budget_max"].value;
+
+            if (isNaN(budget_min) || isNaN(budget_max) || budget_min == "" || budget_max == "") {
+                //alert("Please enter a valid price range.");
+                document.getElementById("edge").innerHTML += "<p class='error' style='color:red; font-style:italic'>*Please enter a valid price range.</p>";
+                return false;
+            }
+            else if (budget_min < 0 || budget_max < 0) {
+                //alert("Please enter a valid price range.");
+                document.getElementById("edge").innerHTML += "<p class='error' style='color:red; font-style:italic'>*Please enter a valid price range.</p>";
+                return false;
+            }
+            else if (budget_min % 100 != 0 || budget_max % 100 != 0) {
+                //alert("Price must be a multiple of 100.");
+                document.getElementById("edge").innerHTML += "<p class='error' style='color:red; font-style:italic'>*Price must be a multiple of 100.</p>";
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="outer">
+        <div id="edge" class="minimal">
+        <form name = "preferences" action = "{{ url_for('user', bla=i) }}" onsubmit="return validate_form()" method = "POST">
+            Min Budget:<br>
+            <input class="fieldStyle" type = "text" name = "budget_min"><br>
+            Max Budget:<br>
+            <input class="fieldStyle" type = "text" name = "budget_max"><br>
+            Room Type:<br>
+            <select class="fieldStyle" name = "room_type">
+                <option value="Room"> Room</option>
+                <option value="Studio">Studio</option>
+                <option value="One Bedroom">1 Bed</option>
+                <option value="Two Bedrooms">2 Bed</option>
+                <option value="Three Bedrooms">3 Bed</option>
+                <option value="Four or More Bedrooms">4+ Bed</option>
+            </select><br>
+            Green Spaces:<br>
+            <input class="fieldStyle" type="range" min="0" max="1" step="0.2" value="0" name="green_space"><br>
+            Within
+            <input class="fieldStyle" type = "text" placeholder = "30" name = "travel_time">
+             minutes from
+            <input class="fieldStyle" type = "text"  placeholder = "Covent Garden" name = "destination">
+             by
+            <select class="fieldStyle" name = "transport">
+                <option value="Car">Car</option>
+                <option value="Public Transport">Public Transport</option>
+                <option value="Foot">Foot</option>
+            </select>.<br>
+            <input type="submit" value="Search" /><br>
+        </form>
+        </div>
+    </div>
+</body>
+</html>

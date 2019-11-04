@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+    p {
+      position: absolute;
+      font-size: 95%; font-family:"verdana"; font-weight: bold; color: #376f89;
+      line-height: 15px;
+      height: 10px;
+      width: 80%;
+      top: 1%;
+    }
+
+    p1 {
+      font-size: 0.7em; font-family:"verdana"; font-weight: bold; color: #88959b;
+      line-height: 10px;
+      font-style: italic;
+    }
+
+    body {
+    background-color: #f7f7f7;
+    background-color: #eff2f7;
+    background-color: #f2f4f7
+    }
+
+    .area_box {
+      position: relative;
+      width: 90%;
+      height: 30px;
+      padding: 10px;
+      background-color: white;
+      box-shadow: 10px 10px 22px -13px rgba(0,0,0,0.20);
+      border: 2px lightgrey;
+      //margin: 4px;
+      border-bottom: 1px solid black;
+    }
+
+    .area_box:hover {
+        background-color: lightgrey;
+    }
+
+    .bla {
+        overflow-y: scroll;
+        max-width: 450px;
+        max-height: 98vh;
+    }
+
+    .score {
+        font-family: "verdana"; font-weight: bold; color: grey;
+        position: absolute;
+        right: 10px;
+        top: 35%;
+    }
+
+    .warning {
+        position: relative;
+        padding: 10px;
+        box-shadow: 10px 10px 22px -13px rgba(0,0,0,0.20);
+        border: 4px orange;
+        font-family: "verdana"; font-size: 10px;
+    }
+
+    .cutoff {
+    }
+    html, body {
+        position:relative;
+    }
+    object {
+        position: absolute;
+        left: 600px;
+        top: 30px;
+    }
+    </style>
+</head>
+<body>
+{% if c > 0 %}
+    <div class="warning">{{c}} areas have been excluded from this search due to insufficient data.</div>
+{% endif %}
+<div class="bla">
+    {% for vic in v %}
+    <div class="area_box w{{vic.vicinity_id}}" >
+        <a href= "{{ url_for('vicinity_details', vicinity_id=vic.vicinity_id) }}">
+        <p>{{loop.index}}: {{ vic.name }}
+            <p1>{{vic.local_authority}}</p1>
+        </p>
+        </a>
+        <div class="score">
+            {{vic.score}}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<object id="ward_map" data="{{ url_for('static', filename='elondon_ward_map_2011.svg') }}" onload="init()">
+</object>
+<script src="{{url_for('static', filename='map.js')}}"></script>
+</body>
+</html>
